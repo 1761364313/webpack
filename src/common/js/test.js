@@ -21,6 +21,10 @@ console.log('a', a)
 
 console.log('a', a)
 
+<<<<<<< HEAD
 console.log('hello word')
 
 console.log(121212)
+=======
+console.log('hello words sdasda ')
+>>>>>>> c2cb64a84e557333a8102114ee45a673f699cf45
