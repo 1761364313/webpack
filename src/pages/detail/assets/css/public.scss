@@ -1,0 +1,148 @@
+// 颜色
+$red:#EE2532;
+$black:#262626;
+$white:#fff;
+$color-bg:#f8f8f8;
+$color-a:#aaa;
+$color-e:#eee;
+$color-3:#333;
+$color-9:#999;
+$color-btn:#5F290F;
+//字体大小
+$font-s24:0.24rem;
+$font-s3:0.3rem;
+// z-index 乘积关系
+$z-index-1:-1;
+$z-index0:0;
+$z-index1:1;
+$z-index2:2;
+$z-index3:3;
+$z-index50:50;
+$z-index99:99;
+$z-index100:100;
+$z-index1000:1000;
+
+// 卡片样式
+@mixin cart-box($w:100%,$h:auto,$p:0.24rem,$r:0.16rem,$b:$white) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $p 0;
+  width: 100%;
+  height: $h;
+  position: relative;
+  border-radius: $r;
+  box-sizing: border-box;  
+  background: $b;
+}
+// 按钮样式
+@mixin btn ($w:1.26rem,$h:0.64rem,$c:$red,$f:0.26rem,$fw:bold,$p:0.16rem,$bd:rgba(238,37,50,0.20)) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: $w;
+  height: $h;
+  border-radius: $h;
+  border: 1px solid $bd;
+  font-size: $f;
+  color: $c;             
+  font-weight: $fw;
+  padding: 0 $p;
+  box-sizing: border-box;
+}
+
+/**
+* 边框
+* 1 改颜色: makeBorder(#fff)
+* 2 带圆角: makeBorder(#fff,all,.8rem)
+* 3 某一边: makeBorder(#fff,bottom)
+* 4 边大小: makeBorder(#fff,bottom,0,2px)
+* 5 边类型: makeBorder(#fff,bottom,0,2px,solid)
+**/
+@mixin makeBorder ($borderColor:#000,$direction:all,$radius:0,$borderSize:1px,$borderType:solid){
+  position: relative;
+  &::after{
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    @if $direction == 'bottom' {
+      bottom: 0;
+    } @else {
+      top: 0;
+    }
+    width: 200%;
+    
+    transform-origin:0 0;
+    @if $direction == 'all'{
+      height: 200%;
+      border: #{$borderSize} #{$borderType} #{$borderColor};
+      transform: scale(0.5) translateY(-.03rem);
+    } @else {
+      transform: scale(0.5);
+      border-#{$direction}: #{$borderSize} #{$borderType} #{$borderColor};
+    }
+    @if $radius != 0 {
+      @include makeRadius($radius)
+    } 
+  }
+  @if $direction != 'all'{
+    @media (-webkit-min-device-pixel-ratio:  1.5),(min-device-pixel-ratio: 1.5){
+      @if ($direction == 'bottom' or $direction == 'top') {
+        &::after{
+          transform: scaleX(0.7);
+        }
+      }@else if ($direction == 'left' or $direction == 'right') {
+        &::after{
+          transform: scaleY(0.7);
+        }
+      }
+    }
+    @media (-webkit-min-device-pixel-ratio:  2),(min-device-pixel-ratio: 2){
+      @if ($direction == 'bottom' or $direction == 'top') {
+        &::after{
+          transform: scaleX(0.5);
+        }
+      }@else if ($direction == 'left' or $direction == 'right') {
+        &::after{
+          transform: scaleY(0.5);
+        }
+      }
+    }
+    @media (-webkit-min-device-pixel-ratio:  3),(min-device-pixel-ratio: 3){
+      @if ($direction == 'bottom' or $direction == 'top') {
+        &::after{
+          transform: scaleX(0.33);
+        }
+      }@else if ($direction == 'left' or $direction == 'right') {
+        &::after{
+          transform: scaleY(0.33);
+        }
+      }
+    }
+  }
+}
+
+/**
+* 多行文本溢出
+* .itemName{@include ellipsisBox(1|2)}
+**/
+@mixin ellipsisBox($v:1){
+  overflow: hidden;
+  white-space: nowrap;
+  word-break: break-all;
+  @if $v == 1{
+    text-overflow: ellipsis;
+  } @else {
+    -webkit-line-clamp: $v;
+    line-clamp: $v;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    display:-webkit-box;
+    display:box;
+  }
+}
+
+@mixin makeRadius($radius) {
+  border-radius: $radius;
+}

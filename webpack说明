@@ -1,0 +1,167 @@
+minify: {
+     //是否对大小写敏感，默认false
+    caseSensitive: true,
+    
+    //是否简写boolean格式的属性如：disabled="disabled" 简写为disabled  默认false
+    collapseBooleanAttributes: true,
+    
+    //是否去除空格，默认false
+    collapseWhitespace: true,
+    
+    //是否压缩html里的css（使用clean-css进行的压缩） 默认值false；
+    minifyCSS: true,
+    
+    //是否压缩html里的js（使用uglify-js进行的压缩）
+    minifyJS: true,
+    
+    //Prevents the escaping of the values of attributes
+    preventAttributesEscaping: true,
+    
+    //是否移除属性的引号 默认false
+    removeAttributeQuotes: true,
+    
+    //是否移除注释 默认false
+    removeComments: true,
+    
+    //从脚本和样式删除的注释 默认false
+    removeCommentsFromCDATA: true,
+    
+    //是否删除空属性，默认false
+    removeEmptyAttributes: true,
+    
+    //  若开启此项，生成的html中没有 body 和 head，html也未闭合
+    removeOptionalTags: false, 
+    
+    //删除多余的属性
+    removeRedundantAttributes: true, 
+    
+    //删除script的类型属性，在h5下面script的type默认值：text/javascript 默认值false
+    removeScriptTypeAttributes: true,
+    
+    //删除style的类型属性， type="text/css" 同上
+    removeStyleLinkTypeAttributes: true,
+    
+    //使用短的文档类型，默认false
+    useShortDoctype: true,
+    }
+  }
+
+/** inject
+  * 注入选项。有四个选项值 true, body, head, false.
+  * 1.true：默认值，script标签位于html文件的 body 底部
+  * 2.body：script标签位于html文件的 body 底部（同 true）
+  * 3.head：script 标签位于 head 标签内
+  * 4.false：不插入生成的 js 文件，只是单纯的生成一个 html 文件
+  */
+
+splitChunks: {
+    chunks: "async”,//默认作用于异步chunk，值为all/initial/async/function(chunk),值为function时第一个参数为遍历所有入口chunk时的chunk模块，chunk._modules为chunk所有依赖的模块，通过chunk的名字和所有依赖模块的resource可以自由配置,会抽取所有满足条件chunk的公有模块，以及模块的所有依赖模块，包括css
+    minSize: 30000,  //表示在压缩前的最小模块大小,默认值是30kb
+    minChunks: 1,  // 表示被引用次数，默认为1；
+    maxAsyncRequests: 5,  //所有异步请求不得超过5个
+    maxInitialRequests: 3,  //初始话并行请求不得超过3个
+   automaticNameDelimiter:'~',//名称分隔符，默认是~
+    name: true,  //打包后的名称，默认是chunk的名字通过分隔符（默认是～）分隔
+    cacheGroups: { //设置缓存组用来抽取满足不同规则的chunk,下面以生成common为例
+       common: {
+         name: 'common',  //抽取的chunk的名字
+         chunks(chunk) { //同外层的参数配置，覆盖外层的chunks，以chunk为维度进行抽取
+         },
+         test(module, chunks) {  //可以为字符串，正则表达式，函数，以module为维度进行抽取，只要是满足条件的module都会被抽取到该common的chunk中，为函数时第一个参数是遍历到的每一个模块，第二个参数是每一个引用到该模块的chunks数组。自己尝试过程中发现不能提取出css，待进一步验证。
+         },
+        priority: 10,  //优先级，一个chunk很可能满足多个缓存组，会被抽取到优先级高的缓存组中
+       minChunks: 2,  //最少被几个chunk引用
+       reuseExistingChunk: true，//  如果该chunk中引用了已经被抽取的chunk，直接引用该chunk，不会重复打包代码
+       enforce: true  // 如果cacheGroup中没有设置minSize，则据此判断是否使用上层的minSize，true：则使用0，false：使用上层minSize
+       }
+    }
+}
+
+
+1.chunks: 表示显示块的范围，有三个可选值：initial(初始块)、async(按需加载块)、all(全部块)，默认为all;
+2.minSize: 表示在压缩前的最小模块大小，默认是30kb；
+3.minChunks: 表示被引用次数，默认为1；
+4.maxAsyncRequests: 最大的按需(异步)加载次数，默认为1；
+5.maxInitialRequests: 最大的初始化加载次数，默认为1；
+6.name: 拆分出来块的名字(Chunk Names)，默认由块名和hash值自动生成，如果是true，将自动生成基于块和缓存组键的名称。如果是字符串或函数将允许您使用自定义名称。如果名称与入口点名称匹配，则入口点将被删除。
+7.automaticNameDelimiter:'',名称分隔符，默认是 
+8.cacheGroups
+
+
+
+
+webpack-merge 合并配置
+copy-webpack-plugin 拷贝静态资源
+optimize-css-assets-webpack-plugin 压缩css
+uglifyjs-webpack-plugin 压缩js
+
+
+// new CopyWebpackPlugin([{
+//   from:path.resolve(__dirname,'./src/common'),
+//   to:path.resolve(__dirname,'./dist/libs')
+// }]), 
+
+
+
+
+复制代码
+// 引入 ParallelUglifyPlugin 插件
+const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
+
+module.exports = {
+  plugins: [
+    // 使用 ParallelUglifyPlugin 并行压缩输出JS代码
+    new ParallelUglifyPlugin({
+      // 传递给 UglifyJS的参数如下：
+      uglifyJS: {
+        output: {
+          /*
+           是否输出可读性较强的代码，即会保留空格和制表符，默认为输出，为了达到更好的压缩效果，
+           可以设置为false
+          */
+          beautify: false,
+          /*
+           是否保留代码中的注释，默认为保留，为了达到更好的压缩效果，可以设置为false
+          */
+          comments: false
+        },
+        compress: {
+          /*
+           是否在UglifyJS删除没有用到的代码时输出警告信息，默认为输出，可以设置为false关闭这些作用
+           不大的警告
+          */
+          warnings: false,
+
+          /*
+           是否删除代码中所有的console语句，默认为不删除，开启后，会删除所有的console语句
+          */
+          drop_console: true,
+
+          /*
+           是否内嵌虽然已经定义了，但是只用到一次的变量，比如将 var x = 1; y = x, 转换成 y = 5, 默认为不
+           转换，为了达到更好的压缩效果，可以设置为false
+          */
+          collapse_vars: true,
+
+          /*
+           是否提取出现了多次但是没有定义成变量去引用的静态值，比如将 x = 'xxx'; y = 'xxx'  转换成
+           var a = 'xxxx'; x = a; y = a; 默认为不转换，为了达到更好的压缩效果，可以设置为false
+          */
+          reduce_vars: true
+        }
+      }
+    }),
+  ]
+}
+
+
+test: 使用正则去匹配哪些文件需要被 ParallelUglifyPlugin 压缩，默认是 /.js$/.
+include: 使用正则去包含被 ParallelUglifyPlugin 压缩的文件，默认为 [].
+exclude: 使用正则去不包含被 ParallelUglifyPlugin 压缩的文件，默认为 [].
+cacheDir: 缓存压缩后的结果，下次遇到一样的输入时直接从缓存中获取压缩后的结果并返回，cacheDir 用于配置缓存存放的目录路径。默认不会缓存，想开启缓存请设置一个目录路径。
+
+workerCount：开启几个子进程去并发的执行压缩。默认是当前运行电脑的 CPU 核数减去1。
+sourceMap：是否为压缩后的代码生成对应的Source Map, 默认不生成，开启后耗时会大大增加，一般不会将压缩后的代码的
+sourceMap发送给网站用户的浏览器。
+uglifyJS：用于压缩 ES5 代码时的配置，Object 类型，直接透传给 UglifyJS 的参数。
+uglifyES：用于压缩 ES6 代码时的配置，Object 类型，直接透传给 UglifyES 的参数。
