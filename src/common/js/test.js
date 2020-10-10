@@ -27,3 +27,6 @@ console.log(1221122)
 
 console.log(222)
 console.log(1223333)
+
+
+console.log('hello word')
