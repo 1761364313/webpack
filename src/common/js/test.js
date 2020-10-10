@@ -22,4 +22,4 @@ console.log('a', a)
 console.log('a', a)
 
 console.log('hello words')
- console.log('wellcome to beijing')
+ console.log('wellcome to beijing ss ')
