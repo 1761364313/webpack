@@ -26,4 +26,8 @@ console.log('hello words')
 console.log(12121)
 console.log('wellcome to beijing ss test')
 
+<<<<<<< HEAD
 let a = 5555
+=======
+let a = 1212
+>>>>>>> 8fa1739f9b658c97183e12529e0540bc64a798a2
