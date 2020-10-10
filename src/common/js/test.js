@@ -22,6 +22,6 @@ console.log('a', a)
 console.log('a', a)
 
 console.log('hello words')
-console.log('wellcome to beijing ss ')
 
 console.log(12121)
+console.log('wellcome to beijing ss test')
