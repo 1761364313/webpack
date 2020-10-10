@@ -28,3 +28,5 @@ console.log('wellcome to beijing ss test')
 
 let a = 5555
 let d = 1212
+
+let c = 'hello word !'
