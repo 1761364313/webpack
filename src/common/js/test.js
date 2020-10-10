@@ -21,9 +21,4 @@ console.log('a', a)
 
 console.log('a', a)
 
-console.log(1212221)
 
-console.log(1221122)
-
-console.log(222)
-console.log(1223333)
