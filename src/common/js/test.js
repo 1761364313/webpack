@@ -31,4 +31,4 @@ let d = 1212
 
 let c = 'hello word !'
 
-let e = 'wellcome to beijing ss  asdasd sss s'
+let e = 'wellcome to beijing ss s sdasdasd'
