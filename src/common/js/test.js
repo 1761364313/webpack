@@ -21,6 +21,4 @@ console.log('a', a)
 
 console.log('a', a)
 
-console.log(121212)
-
-console.log('hello words sdasda ')
+console.log('hello words')
