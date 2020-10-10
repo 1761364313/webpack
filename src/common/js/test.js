@@ -25,3 +25,5 @@ console.log('hello words')
 
 console.log(12121)
 console.log('wellcome to beijing ss test')
+
+let a = 1212
